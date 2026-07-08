@@ -39,5 +39,41 @@ const generateData = (sizeInMb) => {
     for (let i = 0; i < view.length ; i++) {
         view[i] = Math.floor(Math.random() * 256);
     }
-    return new Blob9[view], {type: 'application/octet-stream'});
+    return new Blob([view], {type: 'application/octet-stream'});
+};
+
+//Chart
+const initChart = () => {
+    const ctx = document.getElementById('speedChart').getContext('2d');
+    chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Duzy plik (zapis)','Duzy plik (odczyt)', 'Maly plik (zapis)', 'Maly plik (odczyt)'],
+            datasets: [{
+                label: 'Predkosc MB/s',
+                data: [0,0,0,0],
+                backgroundColor: [
+                    'rgba(46,204,113,0.7)',
+                    'rgba(52,152,219,0.7)',
+                    'rgba(155,89,182,0.7)',
+                    'rgba(241,196,15,0.7)'
+                ],
+                borderColor: [
+                    '#2ecc71', '#3498db', '#9b59b6', '#f1c40f'
+                ],
+                borderWidth: 1
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, title: { display: true, text: 'MB/s' } }
+            }
+        }
+    });
+};
+
+window.onload = () => {
+    initChart();
 };
