@@ -31,3 +31,13 @@ const clearStore = () => {
         request.onsuccess = () => resolve();
     });
 };
+
+//Generate data in RAM
+const generateData = (sizeInMb) => {
+    const buffer = new ArrayBuffer(sizeInMb * 1024 * 1024);
+    const view = new Uint8Array(buffer);
+    for (let i = 0; i < view.length ; i++) {
+        view[i] = Math.floor(Math.random() * 256);
+    }
+    return new Blob9[view], {type: 'application/octet-stream'});
+};
