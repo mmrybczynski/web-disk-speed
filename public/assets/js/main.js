@@ -21,3 +21,13 @@ const initDB = () => {
         request.onerror = (e) => reject(e.target.error);
     });
 };
+
+//Clear database
+const clearStore = () => {
+    return new Promise((resolve) => {
+        const transaction = db.transaction([STORE_NAME],'readwrite');
+        const store = transaction.objectStore(STORE_NAME);
+        const request = store.clear();
+        request.onsuccess = () => resolve();
+    });
+};
