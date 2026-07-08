@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Disk Speed Benchmark</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/web-disk-speed/public/assets/css/main.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Web Disk Speed Test</h1>
+    <p style="text-align: center; color: #7f8c8d;">
+        Test symuluje zapis i odczyt danych w bazie IndexedDB Twojej przeglądarki.
+    </p>
+    
+    <button id="startBtn" class="btn">Uruchom Test</button>
+    <div id="status">Gotowy do testu</div>
+
+    <div class="chart-container">
+        <canvas id="speedChart"></canvas>
+    </div>
+</div>
+</body>
+</html>
