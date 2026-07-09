@@ -83,7 +83,7 @@ const runBenchmark = async () => {
     await initDB();
     await clearStore();
 
-    const largeSampleSizeMB = 40;
+    const largeSampleSizeMB = 200;
     const smallSampleCount = 200;
     const smallSampleSizeKB = 64;
     const totalSmallSizeMB = (smallSampleCount * smallSampleSizeKB) / 1024;
@@ -106,6 +106,22 @@ const runBenchmark = async () => {
     chart.data.datasets[0].data[0] = largeWriteSpeed.toFixed(2);
     chart.update();
 
+    status.innerText = "Test odczytu duzego pliku";
+    startTime = performance.now();
+    await new Promise((resolve) => {
+        const tx = db.transaction([STORE_NAME], 'readonly');
+        const req = tx.objectStore(STORE_NAME).get('large_file');
+        req.onsuccess = () => {
+            const dummy = req.result;
+            resolve();
+        };
+    });
+    endTime = performance.now();
+    const largeReadSpeed = largeSampleSizeMB / ((endTime - startTime) / 1000);
+    chart.data.datasets[0].data[1] = largeReadSpeed.toFixed(2);
+    chart.update();
+
+    await clearStore();
 };
 
 window.onload = () => {
