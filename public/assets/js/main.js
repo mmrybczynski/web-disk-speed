@@ -74,6 +74,17 @@ const initChart = () => {
     });
 };
 
+const runBenchmark = async () => {
+    const startBtn = document.getElementById("startBtn");
+    const status = document.getElementById('status');
+    startBtn.disabled = true;
+
+    status.innerText = 'Inicjalizacja';
+    await initDB();
+    await clearStore();
+};
+
 window.onload = () => {
     initChart();
+    document.getElementById('startBtn').addEventListener('click', runBenchmark);
 };
