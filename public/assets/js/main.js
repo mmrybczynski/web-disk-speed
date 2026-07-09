@@ -82,6 +82,30 @@ const runBenchmark = async () => {
     status.innerText = 'Inicjalizacja';
     await initDB();
     await clearStore();
+
+    const largeSampleSizeMB = 40;
+    const smallSampleCount = 200;
+    const smallSampleSizeKB = 64;
+    const totalSmallSizeMB = (smallSampleCount * smallSampleSizeKB) / 1024;
+
+    status.innerText = "Generowanie duzego pliku";
+    const largeBlob = generateData(largeSampleSizeMB);
+
+    status.innerText = "Test zapisu duzego pliku";
+    let startTime = performance.now();
+    await new Promise((resolve) => {
+        const tx = db.transaction([STORE_NAME], 'readwrite');
+        const req = tx.objectStore(STORE_NAME).get('large_file');
+        req.onsuccess = () => {
+            const dummy = req.result;
+            resolve();
+        };
+    });
+    let endTime = performance.now();
+    const largeWriteSpeed = largeSampleSizeMB / ((endTime - startTime) / 1000);
+    chart.data.datasets[0].data[0] = largeWriteSpeed.toFixed(2);
+    chart.update();
+
 };
 
 window.onload = () => {
