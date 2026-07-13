@@ -123,7 +123,6 @@ const runBenchmark = async () => {
 
     await clearStore();
 
-    // --- TEST 3: ZAPIS MAŁYCH PLIKÓW ---
     status.innerText = "Generowanie małych paczek danych...";
     const smallBlobs = [];
     for(let i=0; i<smallSampleCount; i++) {
@@ -144,6 +143,32 @@ const runBenchmark = async () => {
     const smallWriteSpeed = totalSmallSizeMB / ((endTime - startTime) / 1000);
     chart.data.datasets[0].data[2] = smallWriteSpeed.toFixed(2);
     chart.update();
+
+    status.innerText = "Testowanie odczytu małych plików...";
+    startTime = performance.now();
+    await new Promise((resolve) => {
+        const tx = db.transaction([STORE_NAME], 'readonly');
+        const store = tx.objectStore(STORE_NAME);
+        let count = 0;
+        for(let i=0; i<smallSampleCount; i++) {
+            const req = store.get(`small_${i}`);
+            req.onsuccess = () => {
+                count++;
+                if(count === smallSampleCount) resolve();
+            };
+        }
+    });
+    endTime = performance.now();
+    const smallReadSpeed = totalSmallSizeMB / ((endTime - startTime) / 1000);
+    chart.data.datasets[0].data[3] = smallReadSpeed.toFixed(2);
+    chart.update();
+
+    // Czyszczenie na koniec
+    status.innerText = "Czyszczenie pamięci podręcznej...";
+    await clearStore();
+    
+    status.innerText = "Test zakończony!";
+    startBtn.disabled = false;
 };
 
 window.onload = () => {
