@@ -83,8 +83,8 @@ const runBenchmark = async () => {
     await initDB();
     await clearStore();
 
-    const largeSampleSizeMB = 200;
-    const smallSampleCount = 200;
+    const largeSampleSizeMB = 500;
+    const smallSampleCount = 400;
     const smallSampleSizeKB = 64;
     const totalSmallSizeMB = (smallSampleCount * smallSampleSizeKB) / 1024;
 
