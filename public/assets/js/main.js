@@ -122,6 +122,28 @@ const runBenchmark = async () => {
     chart.update();
 
     await clearStore();
+
+    // --- TEST 3: ZAPIS MAŁYCH PLIKÓW ---
+    status.innerText = "Generowanie małych paczek danych...";
+    const smallBlobs = [];
+    for(let i=0; i<smallSampleCount; i++) {
+        smallBlobs.push(generateData(smallSampleSizeKB / 1024));
+    }
+
+    status.innerText = "Testowanie zapisu małych plików...";
+    startTime = performance.now();
+    await new Promise((resolve) => {
+        const tx = db.transaction([STORE_NAME], 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        for(let i=0; i<smallSampleCount; i++) {
+            store.put(smallBlobs[i], `small_${i}`);
+        }
+        tx.oncomplete = () => resolve();
+    });
+    endTime = performance.now();
+    const smallWriteSpeed = totalSmallSizeMB / ((endTime - startTime) / 1000);
+    chart.data.datasets[0].data[2] = smallWriteSpeed.toFixed(2);
+    chart.update();
 };
 
 window.onload = () => {
