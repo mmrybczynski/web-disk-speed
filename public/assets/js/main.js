@@ -123,6 +123,7 @@ const runBenchmark = async () => {
 
     await clearStore();
 
+<<<<<<< HEAD
     status.innerText = "Generowanie małych paczek danych...";
     const smallBlobs = [];
     for(let i=0; i<smallSampleCount; i++) {
@@ -168,6 +169,9 @@ const runBenchmark = async () => {
     await clearStore();
     
     status.innerText = "Test zakończony!";
+=======
+    status.innerText = "Gotowy do testu";
+>>>>>>> 8dae132 (Modified main.js)
     startBtn.disabled = false;
 };
 
